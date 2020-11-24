@@ -1,5 +1,4 @@
 import React from 'react';
-import Padsplaceholder from '../Padsiface/Padsplaceholder'
 
 const akaistyle = {
     width: "700px",

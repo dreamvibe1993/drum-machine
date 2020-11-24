@@ -1,5 +1,4 @@
 import React from 'react';
-import Pad from './Pad';
 const btnsstyle = {
     boxSizing: 'border-box',
     width: '275px',
@@ -14,7 +13,7 @@ const btnsstyle = {
     border: 'none',
     marginBottom: '106px',
     marginLeft: '105px',
-    marginTop: '262px'
+    marginTop: '94px'
 
 }
 

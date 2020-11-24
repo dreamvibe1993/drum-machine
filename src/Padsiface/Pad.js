@@ -11,7 +11,8 @@ const btnstyles = {
 const pad = (props) => {
     return <div 
     onKeyDown={props.keydown}
-style={btnstyles}>{props.children}</div>
+    onClick={props.click}
+    style={btnstyles}>{props.children}</div>
 }
 
 export default pad;

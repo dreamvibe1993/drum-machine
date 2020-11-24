@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+@font-face {
+  font-family: MK-90; 
+  src: url(19355.ttf); 
+ }
+.Screen {
+  color: white;
+  font-family: MK-90;
+  font-size: 12px;
+  line-height: 1.8;
+  opacity: .7;
+}

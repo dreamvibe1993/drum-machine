@@ -3,6 +3,7 @@ import { Component } from 'react';
 import Akai from './Akai/Akai'
 import Pad from './Padsiface/Pad'
 import Padsplaceholder from './Padsiface/Padsplaceholder'
+import Screen from './Akai/Screen'
 
 const mainstyle = {
   display: 'flex',
@@ -29,7 +30,8 @@ class App extends Component {
       {id: 'Kick-2', keycode: 'v', url: 'samples/Kick-2.mp3'},
       {id: 'Snare-1', keycode: 'b', url: 'samples/Snare-1.mp3'},
       {id: 'Snare-2', keycode: 'n', url: 'samples/Snare-2.mp3'}
-    ]
+    ],
+    screen: ''
   }
   componentDidMount() {
     document.addEventListener('keydown', this.pressHandler)
@@ -42,30 +44,52 @@ class App extends Component {
       pad.style.background = 'none';
     }, 100)
   }
-  pressHandler = (event) => {
-    let bullseye = this.state.pads.findIndex(p => {
-      return event.key == p.keycode;
-    })
-    if (bullseye >= 0) {
-      const sound = document.querySelector('#' + this.state.pads[bullseye].id);
+  playThesound = (value) => {
+      const sound = document.querySelector('#' + this.state.pads[value].id);
       let pad = sound.parentNode;
+      this.setState({
+        screen: this.state.pads[value].id
+      })
       this.lightTrigger(pad);
       sound.currentTime = 0;
       sound.play();
-    } else {
-      console.log('missed');
+  }
+  pressHandler = (event) => {
+    if (event.type == 'keydown') {
+      let bullseye = this.state.pads.findIndex(p => {
+        return event.key == p.keycode;
+      })
+      if (bullseye >= 0) {
+        this.playThesound(bullseye);
+      } else {
+        return
+      }
+    }
+    if (event.type == 'click') {
+      let bullseye = this.state.pads.findIndex(p => {
+        return event.target.firstChild.id == p.id;
+      })
+      if (bullseye) {
+        this.playThesound(bullseye);
+      } else {
+        return
+      }
     }
   }
   render() {
     return (
       <div style={mainstyle}>
         <Akai>
+          <Screen>
+            <p className="Screen">current sample: {this.state.screen}</p>
+          </Screen>
           <Padsplaceholder>
             {
               this.state.pads.map((i, index) => {
                 return <Pad
                   key={index}
                   keydown={this.pressHandler}
+                  click={this.pressHandler}
                   >
                     <audio id={i.id} src={i.url}></audio>
                 </Pad>
