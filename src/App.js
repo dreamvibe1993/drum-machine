@@ -44,12 +44,9 @@ class App extends Component {
   }
   pressHandler = (event) => {
     let bullseye = this.state.pads.findIndex(p => {
-      console.log('e.key: ' + event.key, p.keycode)
       return event.key == p.keycode;
     })
-    console.log('e.bullseye: ' + bullseye)
     if (bullseye >= 0) {
-      console.log(this.state.pads[bullseye].id);
       const sound = document.querySelector('#' + this.state.pads[bullseye].id);
       let pad = sound.parentNode;
       this.lightTrigger(pad);
