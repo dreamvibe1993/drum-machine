@@ -11,7 +11,7 @@ const btnsstyle = {
     display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    border: '1px solid red',
+    border: 'none',
     marginBottom: '106px',
     marginLeft: '105px',
     marginTop: '262px'

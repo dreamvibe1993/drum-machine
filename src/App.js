@@ -13,31 +13,51 @@ const mainstyle = {
 class App extends Component {
   state = {
     pads: [
-      {id: 1, name: 'Ride 1'},
-      {id: 2, name: 'Ride 2'},
-      {id: 3, name: 'Crash 1'},
-      {id: 4, name: 'Crash 2'},
-      {id: 5, name: 'Tom 1'},
-      {id: 6, name: 'Tom 2'},
-      {id: 7, name: 'Tom 3'},
-      {id: 8, name: 'Tom 4'},
-      {id: 9, name: 'Hihat Foot'},
-      {id: 10, name: 'Hihat Closed'},
-      {id: 11, name: 'Hihat Loose'},
-      {id: 12, name: 'Hihat Open'},
-      {id: 13, name: 'Kick 1'},
-      {id: 14, name: 'Kick 2'},
-      {id: 15, name: 'Snare 1'},
-      {id: 16, name: 'Snare 2'}
+      {id: 'Ride-1', keycode: '5', url: 'samples/Ride-1.mp3'},
+      {id: 'Ride-2', keycode: '6', url: 'samples/Ride-2.mp3'},
+      {id: 'Crash-1', keycode: '7', url: 'samples/Crash-1.mp3'},
+      {id: 'Crash-2', keycode: '8', url: 'samples/Crash-2.mp3'},
+      {id: 'Tom-1', keycode: 'r', url: 'samples/Tom-1.mp3'},
+      {id: 'Tom-2', keycode: 't', url: 'samples/Tom-2.mp3'},
+      {id: 'Tom-3', keycode: 'y', url: 'samples/Tom-3.mp3'},
+      {id: 'Tom-4', keycode: 'u', url: 'samples/Tom-4.mp3'},
+      {id: 'Hihat-Foot', keycode: 'f', url: 'samples/Hat-1.mp3'},
+      {id: 'Hihat-Closed', keycode: 'g', url: 'samples/Hat-2.mp3'},
+      {id: 'Hihat-Loose', keycode: 'h', url: 'samples/Hat-3.mp3'},
+      {id: 'Hihat-Open', keycode: 'j', url: 'samples/Hat-4.mp3'},
+      {id: 'Kick-1', keycode: 'c', url: 'samples/Kick-1.mp3'},
+      {id: 'Kick-2', keycode: 'v', url: 'samples/Kick-2.mp3'},
+      {id: 'Snare-1', keycode: 'b', url: 'samples/Snare-1.mp3'},
+      {id: 'Snare-2', keycode: 'n', url: 'samples/Snare-2.mp3'}
     ]
   }
-  pressHandler = (event, padId) => {
-    let padIndex = this.state.pads.findIndex(p => {
-      return p.id === padId;
-    });
-    let pad = this.state.pads[padIndex]
-    console.log(pad);
-
+  componentDidMount() {
+    document.addEventListener('keydown', this.pressHandler)
+  }
+  lightTrigger = (pad) => {
+    pad.style.opacity = 0.2;
+    pad.style.background = 'black';
+    setTimeout(() => {
+      pad.style.opacity = 1;
+      pad.style.background = 'none';
+    }, 100)
+  }
+  pressHandler = (event) => {
+    let bullseye = this.state.pads.findIndex(p => {
+      console.log('e.key: ' + event.key, p.keycode)
+      return event.key == p.keycode;
+    })
+    console.log('e.bullseye: ' + bullseye)
+    if (bullseye >= 0) {
+      console.log(this.state.pads[bullseye].id);
+      const sound = document.querySelector('#' + this.state.pads[bullseye].id);
+      let pad = sound.parentNode;
+      this.lightTrigger(pad);
+      sound.currentTime = 0;
+      sound.play();
+    } else {
+      console.log('missed');
+    }
   }
   render() {
     return (
@@ -48,10 +68,10 @@ class App extends Component {
               this.state.pads.map((i, index) => {
                 return <Pad
                   key={index}
-                  name={i.name}
-                  id={i.id}
-                  click={(event) => this.pressHandler(event, i.id)}
-                />
+                  keydown={this.pressHandler}
+                  >
+                    <audio id={i.id} src={i.url}></audio>
+                </Pad>
               })
             }
           </Padsplaceholder>

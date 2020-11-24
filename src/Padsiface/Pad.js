@@ -5,15 +5,13 @@ const btnstyles = {
     height: '43px',
     margin: '7.4px',
     background: 'none',
-    border: '1px solid red'
+    border: 'none',
 }
 
 const pad = (props) => {
     return <div 
-    name={props.name} 
-    id={props.id} 
-    onClick={props.click} 
-    style={btnstyles}></div>
+    onKeyDown={props.keydown}
+style={btnstyles}>{props.children}</div>
 }
 
 export default pad;
