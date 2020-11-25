@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/akai/static/css/main.7b5d1259.chunk.css",
+    "main.js": "/akai/static/js/main.a2f559b1.chunk.js",
+    "main.js.map": "/akai/static/js/main.a2f559b1.chunk.js.map",
+    "runtime-main.js": "/akai/static/js/runtime-main.00b788dc.js",
+    "runtime-main.js.map": "/akai/static/js/runtime-main.00b788dc.js.map",
+    "static/js/2.b677bac1.chunk.js": "/akai/static/js/2.b677bac1.chunk.js",
+    "static/js/2.b677bac1.chunk.js.map": "/akai/static/js/2.b677bac1.chunk.js.map",
+    "static/js/3.75305b17.chunk.js": "/akai/static/js/3.75305b17.chunk.js",
+    "static/js/3.75305b17.chunk.js.map": "/akai/static/js/3.75305b17.chunk.js.map",
+    "index.html": "/akai/index.html",
+    "static/css/main.7b5d1259.chunk.css.map": "/akai/static/css/main.7b5d1259.chunk.css.map",
+    "static/js/2.b677bac1.chunk.js.LICENSE.txt": "/akai/static/js/2.b677bac1.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/akai/static/media/19355.0f179429.ttf"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.00b788dc.js",
+    "static/js/2.b677bac1.chunk.js",
+    "static/css/main.7b5d1259.chunk.css",
+    "static/js/main.a2f559b1.chunk.js"
+  ]
+}
