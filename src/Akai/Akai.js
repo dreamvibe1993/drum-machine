@@ -4,7 +4,9 @@ const akaistyle = {
     width: "700px",
     height: "700px",
     backgroundImage: `url("drum-machine-697x641.png")`,
-    backgroundRepeat: 'no-repeat'
+    backgroundRepeat: 'no-repeat',
+    marginTop: "20px",
+    zIndex: '10'
 }
 const akai = (props) => {
        return (
