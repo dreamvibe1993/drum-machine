@@ -1,0 +1,23 @@
+.VolumeBtnsContainer {
+    box-sizing: border-box;
+    width: 60px;
+    margin-left: 29px;
+    margin-top: 71px;
+    padding-left: 18px;
+    padding-top: 12px;
+}
+.VolumeBtnsContainer div{
+    width: 16.5px;
+    height: 6.5px;
+    margin-bottom: 12.7px;
+    cursor: pointer;
+}
+.ToAccessTheChildren div:nth-child(3){
+    margin-top: 20px;
+}
+
+
+.VolumeBtnsContainer div:active {
+    background-color: #3ac3fc;
+    opacity: 0.3;
+}

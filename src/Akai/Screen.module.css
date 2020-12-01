@@ -1,0 +1,12 @@
+@font-face {
+    font-family: MK-90; 
+    src: url(../19355.ttf); 
+   }
+.Screen {
+    color: white;
+    font-family: MK-90;
+    font-size: 10px;
+    opacity: .9;
+    margin: 0;
+    line-height: 1.2;
+  }

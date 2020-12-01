@@ -4,6 +4,7 @@ import Akai from './Akai/Akai'
 import Pad from './Padsiface/Pad'
 import Padsplaceholder from './Padsiface/Padsplaceholder'
 import Screen from './Akai/Screen'
+import VolumeButtons from './Akai/VolumeButtons/VolumeButtons'
 
 
 class App extends Component {
@@ -26,11 +27,15 @@ class App extends Component {
       {id: 'Snare-1', keycode: 'b', url: 'samples/boombap/Snare-1.mp3'},
       {id: 'Snare-2', keycode: 'n', url: 'samples/boombap/Snare-2.mp3'}
     ],
-    screen: '',
-    libname: 'BoomBapRaw'
+    screen: 'none',
+    libname: 'BoomBapRaw',
+    mainVolume: 1.0,
+    smplVolume: 1.0,
+    display: {display: 'none'}
   }
   componentDidMount() {
     document.addEventListener('keydown', this.pressHandler)
+    document.querySelector('#scrVolWrapper').style.display = 'none';
   }
   lightTrigger = (pad) => {
     pad.style.opacity = 0.2;
@@ -44,7 +49,8 @@ class App extends Component {
       const sound = document.querySelector('#' + this.state.pads[value].id);
       let pad = sound.parentNode;
       this.setState({
-        screen: this.state.pads[value].id
+        screen: this.state.pads[value].id,
+        smplVolume: sound.volume.toFixed(1)
       })
       this.lightTrigger(pad);
       sound.currentTime = 0;
@@ -52,6 +58,9 @@ class App extends Component {
   }
   pressHandler = (event) => {
     if (event.type == 'keydown') {
+      if (event.code == 'NumpadAdd' || event.code == 'NumpadSubtract' || event.code == 'NumpadMultiply' || event.code == 'Numpad9') {
+        this.volumeHandler(event);
+      }
       let bullseye = this.state.pads.findIndex(p => {
         return event.key == p.keycode;
       })
@@ -84,7 +93,6 @@ class App extends Component {
       let s = i.url.slice(c+1 + wl)
       i.url = `${f}/${taintedWord}/${s}`
     }
-    console.log(mutatedpads)
     this.setState({
       pads: mutatedpads,
       libname: newLibName
@@ -106,31 +114,164 @@ class App extends Component {
       }
     }
 }
+screenSwitcher = (value) => {
+  let vol_part = document.querySelector('#scrVolWrapper');
+  let samp_vol = document.querySelector('#scrSvolPar');
+  let scr_curr_samp = document.querySelector('#scrSampPar');
+  let scr_lib = document.querySelector('#scrLibrPar');
+  let main_vol = document.querySelector('#scrMvolPar');
+  if (value == 'main') {
+    main_vol.style.display = 'block';
+    scr_lib.style.display = 'none';
+    samp_vol.style.display = 'none';
+    scr_curr_samp.style.display = 'none';
+    vol_part.style.display = 'block';
+    setTimeout(() => {
+      main_vol.style.display = 'none';
+      scr_lib.style.display = 'block';
+      samp_vol.style.display = 'none';
+      scr_curr_samp.style.display = 'block';
+      vol_part.style.display = 'none';
+    }, 1000)
+  }
+  if (value == 'samp') {
+    main_vol.style.display = 'none';
+    scr_lib.style.display = 'none';
+    samp_vol.style.display = 'block';
+    scr_curr_samp.style.display = 'block';
+    vol_part.style.display = 'block';
+    setTimeout(() => {
+      main_vol.style.display = 'none';
+      scr_lib.style.display = 'block';
+      samp_vol.style.display = 'none';
+      scr_curr_samp.style.display = 'block';
+      vol_part.style.display = 'none';
+    }, 1000)
+  }
+  if (this.state.screen == 'none') {
+    this.setState({screen: 'push_a_pad_to_adjust'});
+    setTimeout(() => {this.setState({screen: 'none'})}, 1000);
+  }
+}
+sampleVolUp = (rabbit) => {
+  if (rabbit != null) {
+  rabbit.volume = this.state.smplVolume;
+  rabbit.volume > 0.9 ? rabbit.volume = 1 
+  : rabbit.volume += 0.1
+  this.setState({
+    smplVolume: rabbit.volume.toFixed(1)
+  })
+  } else {
+    return;
+  }
+}
+
+sampleVolDn = (rabbit) => {
+  if (rabbit != null) {
+  rabbit.volume = this.state.smplVolume;
+  rabbit.volume < 0.1 ? rabbit.volume = 0 
+  : rabbit.volume -= 0.1
+  this.setState({
+    smplVolume: rabbit.volume.toFixed(1)
+  })
+  } else {
+    return;
+  }
+}
+volumeHandler = (event) => {
+  let rabbit = this.state.screen != '' ? document.querySelector(`#${this.state.screen}`) : null;
+  let id = event.target.id;
+  let keyid;
+  if (event.code == 'NumpadAdd') {
+    keyid = 'mainvup'
+  } else if (event.code == 'NumpadSubtract') {
+    keyid = 'mainvdn'
+  } else if (event.code == 'NumpadMultiply') {
+    keyid = 'smplvup'
+  } else if (event.code == 'Numpad9') {
+    keyid = 'smplvdn'
+  }
+  let mainAudio = document.querySelectorAll('audio');
+  if (event.target.className != 'VolumeBtnsContainer') {
+    switch(id || keyid) {
+      case "mainvup":
+      this.screenSwitcher('main');
+        mainAudio.forEach((element) => {element.volume > 0.9 ? element.volume = 1 : element.volume += 0.1})
+        if (rabbit == null) {
+          this.setState({
+            smplVolume: mainAudio[0].volume.toFixed(1)
+          })
+        } else {
+          this.sampleVolUp(rabbit);
+        }
+        this.setState({
+          mainVolume: mainAudio[0].volume.toFixed(1),
+        })
+        break;
+      case "mainvdn":
+        this.screenSwitcher('main');
+        mainAudio.forEach((element) => {element.volume < 0.1 ? element.volume = 0 : element.volume -= 0.1})
+        if (rabbit == null) {
+          this.setState({
+            smplVolume: mainAudio[0].volume.toFixed(1)
+          })
+        } else {
+          this.sampleVolDn(rabbit);
+        }
+        this.setState({
+          mainVolume: mainAudio[0].volume.toFixed(1),
+        })
+        break;
+      case 'smplvup':
+        this.screenSwitcher('samp');
+        this.sampleVolUp(rabbit);
+        break;
+      case 'smplvdn':
+        this.screenSwitcher('samp');
+        this.sampleVolDn(rabbit);
+        break;
+      default:
+        break;
+    }
+  } else {
+    return;
+  }
+}
   render() {
     return (
       <div className="App">
-        <img className="KeyBindings" src="key-bindings.png"></img>
-        <img onClick={this.switchTheLibrary} className="Disquette BB" src="disquette-bb-dset.png"></img>
-        <img onClick={this.switchTheLibrary} className="Disquette BH" src="disquette-bh-dset.png"></img>
-        <Akai>
-          <Screen>
-            <p className="Screen Sample">current sample: <br/>{this.state.screen}</p>
-            <p className="Screen Library">current library: {this.state.libname}</p>
-          </Screen>
-          <Padsplaceholder>
-            {
-              this.state.pads.map((i, index) => {
-                return <Pad
-                  key={index}
-                  keydown={this.pressHandler}
-                  click={this.pressHandler}
-                  >
-                    <audio id={i.id} src={i.url}></audio>
-                </Pad>
-              })
-            }
-          </Padsplaceholder>
-        </Akai>
+        <div className="Containter">
+          <div className="TableLeft">
+            <img className="KeyBindings" src="key-bindings.png"></img>
+            <img className="VolumeBindings" src="vm-bindings.png"></img>
+          </div>
+          <div className="TableCenter">
+            <Akai>
+              <div style={{display: 'flex'}}>
+              <VolumeButtons clicked={this.volumeHandler}/>
+              <Screen screenSample={this.state.screen} screenLib={this.state.libname} 
+              mainVol={this.state.mainVolume} sampVol={this.state.smplVolume}/>
+              </div>
+              <Padsplaceholder>
+                {
+                  this.state.pads.map((i, index) => {
+                    return <Pad
+                    key={index}
+                    keydown={this.pressHandler}
+                    click={this.pressHandler}
+                    >
+                        <audio id={i.id} src={i.url}></audio>
+                    </Pad>
+                  })
+                }
+              </Padsplaceholder>
+          </Akai>
+          </div>
+          <div className="TableRight">
+            <img onClick={this.switchTheLibrary} className="Disquette BB" src="disquette-bb-dset.png"></img>
+            <img onClick={this.switchTheLibrary} className="Disquette BH" src="disquette-bh-dset.png"></img>
+          </div>
+        </div>  
       </div>
     )
   }

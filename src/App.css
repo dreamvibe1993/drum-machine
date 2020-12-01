@@ -1,56 +1,52 @@
 .App {
+  background-color: #000000;
+  height: 100vh;
   display: flex;
   justify-content: center;
-  background-color: #000000;
+}
+.Containter {
   background-image: url(img/school_desk.jpg);
+  width: 1540px;
+  display: flex;
+  justify-content: space-between;
   background-repeat: no-repeat;
   background-position: top;
-  height: 100vh;
-  width: 100%;
+  padding: 30px;
+}
+.TableLeft, .TableCenter, .TableRight {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+.TableLeft {
+  padding-left: 70px;
+}
+.TableRight {
+  padding-right: 70px;
 }
 .KeyBindings {
   width: 300px;
   height: 368px;
-  position: absolute;
-  top: 60px;
-  left: 60px;
   transform: rotate(-12deg);
 }
+.VolumeBindings {
+  width: 200px;
+  height: 201px;
+  transform: rotate(5deg);
+}
 
-@font-face {
-  font-family: MK-90; 
-  src: url(19355.ttf); 
- }
 
-.Screen {
-  color: white;
-  font-family: MK-90;
-  font-size: 10px;
-  opacity: .9;
-  margin: 0;
-}
-.Sample {
-  line-height: 1.2;
-}
-.Library {
-  line-height: 1.2;
-}
 .Disquette {
   width: 200px;
   height: 200px;
 }
 .BB {
-  position: absolute;
-  top: 60px;
-  right: 100px;
+  margin-top: 50px;
   transform: rotate(11deg);
   cursor: pointer;
 }
 .BH {
-  position: absolute;
-  top: 310px;
-  right: 100px;
+  margin-top: 50px;
   transform: rotate(2deg);
   cursor: pointer;
-
 }
